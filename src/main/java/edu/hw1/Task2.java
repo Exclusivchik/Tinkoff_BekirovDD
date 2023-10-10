@@ -1,22 +1,21 @@
 package edu.hw1;
 
-public class Task2 {
+public final class Task2 {
+    static final int TEN = 10;
+
+    private Task2() {
+    }
+
     public static int countDigits(int n) {
         if (n == 0) {
             return 1;
         }
         int ans = 0;
-        while (n != 0) {
+        int newn = n;
+        while (newn != 0) {
             ans++;
-            n /= 10;
+            newn /= TEN;
         }
         return ans;
-    }
-
-    public static void main(String[] args) {
-        System.out.println(countDigits(4666));
-        System.out.println(countDigits(544));
-        System.out.println(countDigits(0));
-        System.out.println(countDigits(-100));
     }
 }

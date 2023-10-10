@@ -1,6 +1,9 @@
 package edu.hw1;
 
-public class Task3 {
+public final class Task3 {
+    private Task3() {
+    }
+
     public static int min(int[] a) {
         int min = a[0];
         for (int el : a) {
@@ -30,13 +33,5 @@ public class Task3 {
             ret = true;
         }
         return ret;
-    }
-
-    public static void main(String[] args) {
-        System.out.println(isNestable(new int[] {1, 2, 3, 4}, new int[] {0, 6}));
-        System.out.println(isNestable(new int[] {3, 1}, new int[] {4, 0}));
-        System.out.println(isNestable(new int[] {9, 9, 8}, new int[] {8, 9}));
-        System.out.println(isNestable(new int[] {1, 2, 3, 4}, new int[] {2, 3}));
-
     }
 }

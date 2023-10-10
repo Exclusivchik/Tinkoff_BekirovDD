@@ -1,46 +1,35 @@
 package edu.hw1;
 
-public class Task5 {
+public final class Task5 {
+    private Task5() {
+    }
+
     public static boolean isPalindromeDescendant(int a) {
-        if(a < 0){
-            a = -a;
-        }
-        String s = "" + a;
+        String s = "" + Math.abs(a);
         while (s.length() > 1) {
             int n = s.length();
             int half = n / 2;
-            boolean is_palindrome = true;
+            boolean isPalindrome = true;
             for (int i = 0; i < half; i++) {
                 if (s.charAt(i) != s.charAt(n - i - 1)) {
-                    is_palindrome = false;
+                    isPalindrome = false;
                     break;
                 }
             }
-            if (is_palindrome) {
+            if (isPalindrome) {
                 return true;
             } else {
-                String new_s = "";
+                String newS = "";
                 for (int i = 0; i < half; i++) {
                     int temp = (s.charAt(2 * i) - '0') + (s.charAt(2 * i + 1) - '0');
-                    new_s = new_s + temp;
+                    newS = newS + temp;
                 }
-                if(n % 2 == 1){
-                    new_s += s.charAt(n - 1);
+                if (n % 2 == 1) {
+                    newS += s.charAt(n - 1);
                 }
-                s = new_s;
+                s = newS;
             }
         }
         return false;
-    }
-
-    public static void main(String[] args) {
-        System.out.println(isPalindromeDescendant(11211230));
-        System.out.println(isPalindromeDescendant(13001120));
-        System.out.println(isPalindromeDescendant(23336014));
-        System.out.println(isPalindromeDescendant(11));
-        System.out.println(isPalindromeDescendant(23));
-        System.out.println(isPalindromeDescendant(123123123));
-        System.out.println(isPalindromeDescendant(1));
-        System.out.println(isPalindromeDescendant(-11));
     }
 }

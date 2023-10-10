@@ -3,46 +3,52 @@ package edu.hw1;
 import java.util.Arrays;
 import java.util.Comparator;
 
-public class Task6 {
+public final class Task6 {
+    static final int CAPRECAR = 6174;
+    static final int FOUR = 4;
+    static final int TEN = 10;
+
+    private Task6() {
+    }
+
     public static int countK(int a, int d) {
-        int len_a = ("" + a).length();
-        if (len_a != 4) {
+        int lenA = ("" + a).length();
+        if (lenA != FOUR) {
             return -1;
         }
-        if (a == 6174) {
+        if (a == CAPRECAR) {
             return d;
         }
-        Integer[] s_a = new Integer[len_a], rs_a = new Integer[len_a];
-        int iter = len_a - 1;
-        while (a != 0) {
-            s_a[iter] = a % 10;
-            rs_a[iter] = a % 10;
+        Integer[] sortedA = new Integer[lenA];
+        Integer[] revSortedA = new Integer[lenA];
+        int iter = lenA - 1;
+        int newA = a;
+        while (newA != 0) {
+            sortedA[iter] = a % TEN;
+            revSortedA[iter] = a % TEN;
             iter--;
-            a /= 10;
+            newA /= TEN;
         }
-        Arrays.sort(s_a, Comparator.naturalOrder());
-        Arrays.sort(rs_a, Comparator.reverseOrder());
+        Arrays.sort(sortedA, Comparator.naturalOrder());
+        Arrays.sort(revSortedA, Comparator.reverseOrder());
 
-        int x = 0, y = 0, pow = 1, temp;
-        for (int i = len_a - 1; i > -1; i--) {
-            x += s_a[i] * pow;
-            y += rs_a[i] * pow;
-            pow *= 10;
+        int x = 0;
+        int y = 0;
+        int pow = 1;
+        int temp;
+        for (int i = lenA - 1; i > -1; i--) {
+            x += sortedA[i] * pow;
+            y += revSortedA[i] * pow;
+            pow *= TEN;
         }
         if (x > y) {
             temp = x - y;
         } else {
             temp = y - x;
         }
-        while (("" + temp).length() != 4) {
-            temp *= 10;
+        while (("" + temp).length() != FOUR) {
+            temp *= TEN;
         }
         return countK(temp, d + 1);
-    }
-
-    public static void main(String[] args) {
-        System.out.println(countK(6621, 0));
-        System.out.println(countK(6554, 0));
-        System.out.println(countK(1234, 0));
     }
 }

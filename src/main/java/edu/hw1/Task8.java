@@ -1,28 +1,56 @@
 package edu.hw1;
 
-public class Task8 {
-    public static boolean knightBoardCapture(int[][] a){
-        for(int i = 0; i < 8; i++){
-            for(int j = 0; j < 8; j++){
-                if(a[i][j] == 1){
-                    if(i - 2 > -1 && j - 1 > -1 && a[i - 2][j - 1] == 1 ||
-                        i - 2 > -1 && j + 1 <  8 && a[i - 2][j + 1] == 1 ||
-                        i + 2 <  8 && j - 1 > -1 && a[i + 2][j - 1] == 1 ||
-                        i + 2 <  8 && j + 1 <  8 && a[i + 2][j + 1] == 1 ||
-                        i - 1 > -1 && j + 2 <  8 && a[i - 1][j + 2] == 1 ||
-                        i - 1 > -1 && j - 2 > -1 && a[i - 1][j - 2] == 1 ||
-                        i + 1 <  8 && j - 2 > -1 && a[i + 1][j - 2] == 1 ||
-                        i + 1 <  8 && j + 2 <  8 && a[i + 1][j + 2] == 1){
-                        return false;
-                    }
-                }
+import java.util.List;
 
-            }
-        }
-        return true;
+public final class Task8 {
+    static final int EIGHT = 8;
+    static final int ZERO = 0;
+    static final int ONE = 1;
+    static final int MINUS_ONE = -1;
+    static final int TWO = 2;
+    static final int MINUS_TWO = -2;
+
+    private Task8() {
     }
 
-    public static void main(String[] args){
+    public static List<int[]> getNeibs(int x, int y) {
+        List<int[]> neibs = null;
+        int[] plusMinusOne = {MINUS_ONE, ONE};
+        int[] plusMinusTwo = {MINUS_TWO, TWO};
+        for (int k : plusMinusOne) {
+            for (int l : plusMinusTwo) {
+                if (ZERO <= x + k && x + k < EIGHT && ZERO <= y + l && y + l < EIGHT) {
+                    neibs.add(new int[] {x + k, y + k});
+                }
+            }
+        }
+        for (int k : plusMinusTwo) {
+            for (int l : plusMinusOne) {
+                if (ZERO <= x + k && x + k < EIGHT && ZERO <= y + l && y + l < EIGHT) {
+                    neibs.add(new int[] {x + k, y + k});
+                }
+            }
+        }
+        return neibs;
+    }
 
+    public static boolean knightBoardCapture(int[][] a) {
+        boolean flag = true;
+
+        for (int i = 0; i < EIGHT; i++) {
+            for (int j = 0; j < EIGHT; j++) {
+                if (a[i][j] != ONE) {
+                    continue;
+                }
+                List<int[]> neibs = getNeibs(i, j);
+                for (int[] neib : neibs) {
+                    if (a[neib[0]][neib[1]] == ONE) {
+                        flag = false;
+                        break;
+                    }
+                }
+            }
+        }
+        return flag;
     }
 }
