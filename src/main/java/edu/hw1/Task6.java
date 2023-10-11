@@ -24,8 +24,8 @@ public final class Task6 {
         int iter = lenA - 1;
         int newA = a;
         while (newA != 0) {
-            sortedA[iter] = a % TEN;
-            revSortedA[iter] = a % TEN;
+            sortedA[iter] = newA % TEN;
+            revSortedA[iter] = newA % TEN;
             iter--;
             newA /= TEN;
         }
