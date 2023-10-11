@@ -1,5 +1,6 @@
 package edu.hw1;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public final class Task8 {
@@ -14,20 +15,20 @@ public final class Task8 {
     }
 
     public static List<int[]> getNeibs(int x, int y) {
-        List<int[]> neibs = null;
+        ArrayList<int[]> neibs = new ArrayList<>();
         int[] plusMinusOne = {MINUS_ONE, ONE};
         int[] plusMinusTwo = {MINUS_TWO, TWO};
         for (int k : plusMinusOne) {
             for (int l : plusMinusTwo) {
                 if (ZERO <= x + k && x + k < EIGHT && ZERO <= y + l && y + l < EIGHT) {
-                    neibs.add(new int[] {x + k, y + k});
+                    neibs.add(new int[] {x + k, y + l});
                 }
             }
         }
         for (int k : plusMinusTwo) {
             for (int l : plusMinusOne) {
                 if (ZERO <= x + k && x + k < EIGHT && ZERO <= y + l && y + l < EIGHT) {
-                    neibs.add(new int[] {x + k, y + k});
+                    neibs.add(new int[] {x + k, y + l});
                 }
             }
         }
