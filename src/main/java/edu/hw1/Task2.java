@@ -1,7 +1,7 @@
 package edu.hw1;
 
 public final class Task2 {
-    static final int TEN = 10;
+    static final int BASE = 10;
 
     private Task2() {
     }
@@ -14,7 +14,7 @@ public final class Task2 {
         int newn = n;
         while (newn != 0) {
             ans++;
-            newn /= TEN;
+            newn /= BASE;
         }
         return ans;
     }

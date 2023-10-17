@@ -43,4 +43,30 @@ public class Task1Test {
         // then
         assertThat(seconds).isEqualTo(-1);
     }
+
+    @Test
+    @DisplayName("Тест4")
+    void test4() {
+        // given
+        String s = "ups:ups";
+
+        // when
+        int seconds = Task1.minutesToSeconds(s);
+
+        // then
+        assertThat(seconds).isEqualTo(-1);
+    }
+
+    @Test
+    @DisplayName("Тест5")
+    void test5() {
+        // given
+        String s = "upsups";
+
+        // when
+        int seconds = Task1.minutesToSeconds(s);
+
+        // then
+        assertThat(seconds).isEqualTo(-1);
+    }
 }

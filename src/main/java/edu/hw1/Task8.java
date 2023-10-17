@@ -37,7 +37,6 @@ public final class Task8 {
 
     public static boolean knightBoardCapture(int[][] a) {
         boolean flag = true;
-
         for (int i = 0; i < EIGHT; i++) {
             for (int j = 0; j < EIGHT; j++) {
                 if (a[i][j] != ONE) {
@@ -54,4 +53,5 @@ public final class Task8 {
         }
         return flag;
     }
+
 }

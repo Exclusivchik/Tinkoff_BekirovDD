@@ -32,18 +32,8 @@ public final class Task7 {
     public static int rotateRight(int n, int shift) {
         int newN = n;
         int lenBitN = getLenIn2Base(n);
-        int newShift = shift % lenBitN;
-        for (int i = lenBitN; i > -1; i--) {
-            int newPos = (i - shift);
-            if (newPos < 0) {
-                newPos += lenBitN;
-            }
-            if ((n & (1 << i)) == (1 << i)) {
-                newN = newN | (1 << newPos);
-            } else {
-                newN = newN & ~(1 << newPos);
-            }
-        }
-        return newN;
+        int newShift = lenBitN - shift % lenBitN;
+
+        return rotateLeft(n, newShift);
     }
 }
