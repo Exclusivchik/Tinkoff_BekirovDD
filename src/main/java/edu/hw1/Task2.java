@@ -11,10 +11,10 @@ public final class Task2 {
             return 1;
         }
         int ans = 0;
-        int newn = n;
-        while (newn != 0) {
+        int newN = n;
+        while (newN != 0) {
             ans++;
-            newn /= BASE;
+            newN /= BASE;
         }
         return ans;
     }
