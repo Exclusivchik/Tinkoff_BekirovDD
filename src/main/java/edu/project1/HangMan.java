@@ -1,111 +1,63 @@
 package edu.project1;
 
-import java.util.Arrays;
-import java.util.Random;
 import java.util.Scanner;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class HangMan {
-    static final int ALPH_POWER = 26;
-    private final static Logger LOGGER = LogManager.getLogger();
+public final class HangMan {
     static final int MAX_ATTEMPTS = 5;
+    static final int HIT = 0;
+    static final int MISS = 1;
+    static final int GIVE_UP = 2;
+    static final int TYPO = 3;
+    static final int USED = 4;
+    private final static Logger LOGGER = LogManager.getLogger();
     private static final Scanner INPUT = new Scanner(System.in);
     private int numOfFails = 0;
-    private char[] hiddenWord;
-    private char[] tempWord;
-    private boolean endOfGame = false;
-    private final boolean[] used = new boolean[ALPH_POWER];
+
+    private boolean isEnd(char[] tempWord) {
+        int patrikCounter = tempWord.length;
+        for (char sym : tempWord) {
+            if (sym != '*') {
+                patrikCounter--;
+            }
+        }
+        return patrikCounter == 0;
+    }
 
     public void run() {
         LOGGER.info("INFO: to give up enter ~78gofman");
         var guesser = new Guess();
-        while (numOfFails != MAX_ATTEMPTS && !endOfGame) {
+        while (numOfFails != MAX_ATTEMPTS && !isEnd(guesser.getTempWord())) {
             LOGGER.info("Guess a letter:");
             String letter = INPUT.nextLine();
-            boolean code = guesser.guess(letter);
-            if (!code) {
-                continue;
+            int code = guesser.guess(letter);
+            switch (code) {
+                case HIT:
+                    LOGGER.info("HIT");
+                    break;
+                case MISS:
+                    numOfFails++;
+                    LOGGER.info("Missed, mistake" + numOfFails + " out of " + MAX_ATTEMPTS);
+                    break;
+                case TYPO:
+                    LOGGER.info("Typo, try again");
+                    break;
+                case USED:
+                    LOGGER.info("You have already guessed this letter");
+                    break;
+                case GIVE_UP:
+                    numOfFails = MAX_ATTEMPTS;
+                    break;
+                default:
+                    break;
             }
-            LOGGER.info("The word: " + new String(tempWord));
+            LOGGER.info("The word: " + new String(guesser.getTempWord()));
         }
-        if (endOfGame) {
+        if (isEnd(guesser.getTempWord())) {
             LOGGER.info("YOU WIN!!!");
         } else {
             LOGGER.info("YOU LOSE(((");
-        }
-    }
-
-    static final class HardCodeWords {
-        private final String[] words = {"hello", "world", "java", "cool",
-            "palindrome", "codeforces", "tinkoff", "univercity"};
-
-        public String getString() {
-            int index = new Random().nextInt(words.length);
-            return words[index];
-        }
-    }
-
-    final class Guess {
-        Guess() {
-            hiddenWord = new HardCodeWords().getString().toCharArray();
-            tempWord = new char[hiddenWord.length];
-            for (int i = 0; i < hiddenWord.length; i++) {
-                tempWord[i] = '*';
-            }
-            Arrays.fill(used, false);
-        }
-
-        private boolean checkLetter(String s) {
-            if (s.length() != 1) {
-                LOGGER.info("Typo, try again");
-                return false;
-            }
-            char letter = Character.toLowerCase(s.charAt(0));
-            if (Character.isDigit(letter)) {
-                LOGGER.info("Character can't be a digit");
-                return false;
-            }
-            if (used[letter - 'a']) {
-                LOGGER.info("You have already guessed this letter");
-                return false;
-            }
-            return true;
-        }
-
-        private boolean guess(String a) {
-            if (a.equals("~78gofman")) {
-                numOfFails = MAX_ATTEMPTS;
-                return false;
-            }
-            if (!checkLetter(a)) {
-                return false;
-            }
-            char letter = Character.toLowerCase(a.charAt(0));
-            boolean flag = false;
-            for (int i = 0; i < tempWord.length; i++) {
-                if (letter == hiddenWord[i]) {
-                    flag = true;
-                    tempWord[i] = letter;
-                    used[letter - 'a'] = true;
-                }
-            }
-            if (flag) {
-                LOGGER.info("Hit");
-                int patrickCounter = 0;
-                for (char sym : tempWord) {
-                    if (sym == '*') {
-                        patrickCounter++;
-                    }
-                }
-                if (patrickCounter == 0) {
-                    endOfGame = true;
-                }
-            } else {
-                numOfFails++;
-                LOGGER.info("Missed, mistake " + numOfFails + " out of 5.");
-            }
-            return true;
         }
     }
 }
