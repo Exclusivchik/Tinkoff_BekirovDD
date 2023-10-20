@@ -3,21 +3,20 @@ package edu.project1;
 import java.util.Arrays;
 
 public class Guess {
-    // 0 - hit, 1 - miss, 2 - give up, 3 - typo, 4 - used
+    // 0 - hit, 1 - miss, 2 - typo, 3 - used, 4 - give up
     static final int HIT = 0;
     static final int MISS = 1;
-    static final int GIVE_UP = 2;
-    static final int TYPO = 3;
-    static final int USED = 4;
+    static final int TYPO = 2;
+    static final int USED = 3;
+    static final int GIVE_UP = 4;
     static final int ALPH_POWER = 26;
     private final boolean[] used = new boolean[ALPH_POWER];
-    private final char[] hiddenWord;
+    private final String hiddenWord;
     private final char[] tempWord;
 
-
-    Guess() {
-        hiddenWord = RandomWord.get();
-        tempWord = new char[hiddenWord.length];
+    Guess(String word) {
+        hiddenWord = word;
+        tempWord = new char[hiddenWord.length()];
         Arrays.fill(tempWord, '*');
         Arrays.fill(used, false);
     }
@@ -43,7 +42,7 @@ public class Guess {
         }
         boolean flag = false;
         for (int i = 0; i < tempWord.length; i++) {
-            if (letter == hiddenWord[i]) {
+            if (letter == hiddenWord.charAt(i)) {
                 flag = true;
                 tempWord[i] = letter;
                 used[letter - 'a'] = true;
@@ -60,5 +59,9 @@ public class Guess {
 
     public char[] getTempWord() {
         return tempWord;
+    }
+
+    public String getHiddenWord() {
+        return hiddenWord;
     }
 }

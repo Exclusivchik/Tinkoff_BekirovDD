@@ -5,7 +5,7 @@ public final class Main {
     }
 
     public static void main(String[] args) {
-        HangMan game = new HangMan();
+        HangMan game = new HangMan("~cin", RandomWord.get());
         game.run();
     }
 }
