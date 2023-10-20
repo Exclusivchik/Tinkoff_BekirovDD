@@ -1,11 +1,13 @@
 package edu.project1;
 
+import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class HangMan {
+    static final int ALPH_POWER = 26;
     private final static Logger LOGGER = LogManager.getLogger();
     static final int MAX_ATTEMPTS = 5;
     private static final Scanner INPUT = new Scanner(System.in);
@@ -13,8 +15,10 @@ public class HangMan {
     private char[] hiddenWord;
     private char[] tempWord;
     private boolean endOfGame = false;
+    private final boolean[] used = new boolean[ALPH_POWER];
 
     public void run() {
+        LOGGER.info("INFO: to give up enter ~78gofman");
         var guesser = new Guess();
         while (numOfFails != MAX_ATTEMPTS && !endOfGame) {
             LOGGER.info("Guess a letter:");
@@ -32,7 +36,7 @@ public class HangMan {
         }
     }
 
-    static final protected class HardCodeWords {
+    static final class HardCodeWords {
         private final String[] words = {"hello", "world", "java", "cool",
             "palindrome", "codeforces", "tinkoff", "univercity"};
 
@@ -42,30 +46,48 @@ public class HangMan {
         }
     }
 
-    final protected class Guess {
+    final class Guess {
         Guess() {
             hiddenWord = new HardCodeWords().getString().toCharArray();
             tempWord = new char[hiddenWord.length];
             for (int i = 0; i < hiddenWord.length; i++) {
                 tempWord[i] = '*';
             }
+            Arrays.fill(used, false);
         }
 
-        boolean guess(String a) {
+        private boolean checkLetter(String s) {
+            if (s.length() != 1) {
+                LOGGER.info("Typo, try again");
+                return false;
+            }
+            char letter = Character.toLowerCase(s.charAt(0));
+            if (Character.isDigit(letter)) {
+                LOGGER.info("Character can't be a digit");
+                return false;
+            }
+            if (used[letter - 'a']) {
+                LOGGER.info("You have already guessed this letter");
+                return false;
+            }
+            return true;
+        }
+
+        private boolean guess(String a) {
             if (a.equals("~78gofman")) {
                 numOfFails = MAX_ATTEMPTS;
                 return false;
             }
-            if (a.length() != 1) {
-                LOGGER.info("Typo, try again");
+            if (!checkLetter(a)) {
                 return false;
             }
-            char letter = a.charAt(0);
+            char letter = Character.toLowerCase(a.charAt(0));
             boolean flag = false;
             for (int i = 0; i < tempWord.length; i++) {
                 if (letter == hiddenWord[i]) {
                     flag = true;
                     tempWord[i] = letter;
+                    used[letter - 'a'] = true;
                 }
             }
             if (flag) {
