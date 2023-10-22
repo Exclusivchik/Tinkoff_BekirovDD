@@ -9,7 +9,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class Task2Test {
     static Arguments[] rectangles() {
-        return new Arguments[]{
+        return new Arguments[] {
             Arguments.of(new Rectangle()),
             Arguments.of(new Square())
         };
