@@ -3,7 +3,6 @@ package edu.hw3.Task5;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import org.jetbrains.annotations.NotNull;
 
 public class Task5 {
     private Task5() {
