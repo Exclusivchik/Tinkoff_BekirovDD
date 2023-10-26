@@ -61,7 +61,7 @@ public class Task5Test {
         //when
 
         //then
-        Assertions.assertThrows(IllegalArgumentException.class, () -> Task5.parseContacts(info, "DESC"));
+        Assertions.assertThrows(NullPointerException.class, () -> Task5.parseContacts(info, "DESC"));
     }
 
     @Test

@@ -18,7 +18,7 @@ public class Task5 {
         }
     }
 
-    public static List<Contact> parseContacts(@NotNull String[] info, String order) {
+    public static List<Contact> parseContacts(String[] info, String order) {
         List<Contact> sortedContacts = new ArrayList<>();
         for (String person: info) {
             sortedContacts.add(createContact(person));
