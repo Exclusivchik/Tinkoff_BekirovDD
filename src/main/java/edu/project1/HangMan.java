@@ -6,19 +6,14 @@ import org.apache.logging.log4j.Logger;
 
 public final class HangMan {
     static final int MAX_ATTEMPTS = 5;
-    static final int HIT = 0;
-    static final int MISS = 1;
-    static final int TYPO = 2;
-    static final int USED = 3;
-    static final int GIVE_UP = 4;
-    private final static Logger LOGGER = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger();
     private static Scanner input;
     //букв отгадано, кол-во ошибок, количество опечаток, пробовали уже использованную букву
     private final int[] state = {0, 0, 0, 0};
     Guess guesser;
 
     public HangMan(String source, String hiddenWord) {
-        if (source.equals("~cin")) {
+        if ("~cin".equals(source)) {
             input = new Scanner(System.in);
         } else {
             input = new Scanner(source);
@@ -53,29 +48,29 @@ public final class HangMan {
             LOGGER.info("Incorrect length of word");
             return "INCORRECT";
         }
-        while (state[MISS] != MAX_ATTEMPTS && !isEnd(guesser.getTempWord())) {
+        while (state[CodeOfGuess.MISS.code] != MAX_ATTEMPTS && !isEnd(guesser.getTempWord())) {
             LOGGER.info("Guess a letter:");
             String letter = input.nextLine();
-            int code = guesser.guess(letter);
+            CodeOfGuess code = guesser.guess(letter);
             switch (code) {
                 case HIT:
                     LOGGER.info("HIT");
-                    state[HIT] += countOccurrences(guesser.getHiddenWord(), letter.charAt(0));
+                    state[CodeOfGuess.HIT.code] += countOccurrences(guesser.getHiddenWord(), letter.charAt(0));
                     break;
                 case MISS:
                     LOGGER.info("Missed, mistake" + state[1] + " out of " + MAX_ATTEMPTS);
-                    state[MISS]++;
+                    state[CodeOfGuess.MISS.code]++;
                     break;
                 case TYPO:
                     LOGGER.info("Typo, try again");
-                    state[TYPO]++;
+                    state[CodeOfGuess.TYPO.code]++;
                     break;
                 case USED:
                     LOGGER.info("You have already guessed this letter");
-                    state[USED]++;
+                    state[CodeOfGuess.USED.code]++;
                     break;
                 case GIVE_UP:
-                    state[MISS] = MAX_ATTEMPTS;
+                    state[CodeOfGuess.MISS.code] = MAX_ATTEMPTS;
                     break;
                 default:
                     break;
