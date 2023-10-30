@@ -1,9 +1,16 @@
 package edu.project2;
 
 public class Cell {
-    private boolean wallRight = false;
-    private boolean wallBottom = false;
-    private int set = -1;
+    private boolean wallRight;
+    private boolean wallBottom;
+    private int set;
+    private String color = " ";
+
+    public Cell(boolean wallRight, boolean wallBottom, int set, String color) {
+        this.set = set;
+        this.wallBottom = wallBottom;
+        this.wallRight = wallRight;
+    }
 
     public void setSet(int set) {
         this.set = set;
@@ -17,23 +24,27 @@ public class Cell {
         this.wallBottom = wallBottom;
     }
 
-    public boolean getWallBottom() {
-        return wallBottom;
+    public void setColor(String color) {
+        this.color = color;
     }
 
-    public boolean getWallRight() {
-        return wallRight;
+    public boolean getWallBottom() {
+        return wallBottom;
     }
 
     public int getSet() {
         return set;
     }
 
+    public boolean getWallRight() {
+        return wallRight;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
     public Cell getCopy() {
-        Cell newCell = new Cell();
-        newCell.setSet(set);
-        newCell.setWallRight(wallRight);
-        newCell.setWallBottom(wallBottom);
-        return newCell;
+        return new Cell(wallRight, wallBottom, set, color);
     }
 }

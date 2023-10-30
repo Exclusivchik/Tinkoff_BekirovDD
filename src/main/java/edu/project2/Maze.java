@@ -17,20 +17,21 @@ public class Maze {
 
     private void generateEllerMaze() {
         Cell[] origin = fillNa(new Cell[width]);
-        for (int i = 0; i < height; i++) {
+        for (int row = 0; row < height; row++) {
             Cell[] tempLine = copyLine(origin);
 
-            //clearing
-            for (int j = 0; j < width; j++) {
-                tempLine[j].setWallRight(false);
-                if (tempLine[j].getWallBottom()) {
-                    tempLine[j] = null;
+            //printSetsOfLine(tempLine);
+            if (row != height - 1) {
+                //clearing
+                for (int j = 0; j < width; j++) {
+                    tempLine[j].setWallRight(false);
+                    if (tempLine[j].getWallBottom()) {
+                        tempLine[j] = null;
+                    }
                 }
-            }
+                //filling empty cells
+                tempLine = fillNa(tempLine);
 
-            //filling empty cells
-            tempLine = fillNa(tempLine);
-            if (i != height - 1) {
                 //creating right walls
                 for (int j = 0; j < width - 1; j++) {
                     if (tempLine[j].getSet() == tempLine[j + 1].getSet()) {
@@ -43,19 +44,20 @@ public class Maze {
                         tempLine[j + 1].setSet(tempLine[j].getSet());
                     }
                 }
-
                 //creating bottom walls
                 for (int j = 0; j < width; j++) {
-                    if (calculateSetPower(tempLine, tempLine[i].getSet()) == 1) {
+                    if (calculateSetPower(tempLine, tempLine[j].getSet()) == 1) {
                         continue;
                     }
                     if (new Random().nextBoolean()) {
                         tempLine[j].setWallBottom(true);
+                        tempLine[j].setColor("_");
                     }
                 }
             } else {
                 for (int j = 0; j < width; j++) {
                     tempLine[j].setWallBottom(true);
+                    tempLine[j].setColor("_");
                 }
                 for (int j = 0; j < width - 1; j++) {
                     if (tempLine[j].getSet() != tempLine[j + 1].getSet()) {
@@ -64,8 +66,9 @@ public class Maze {
                     }
                 }
             }
+            tempLine[width - 1].setWallRight(true);
 
-            grid[i] = copyLine(tempLine);
+            grid[row] = copyLine(tempLine);
             origin = copyLine(tempLine);
         }
     }
@@ -73,7 +76,7 @@ public class Maze {
     private int calculateSetPower(Cell[] line, int set) {
         int counter = 0;
         for (Cell cell : line) {
-            if (cell.getSet() == set) {
+            if (cell.getSet() == set && !cell.getWallBottom()) {
                 counter++;
             }
         }
@@ -84,7 +87,7 @@ public class Maze {
         Cell[] response = new Cell[line.length];
         for (int i = 0; i < line.length; i++) {
             if (line[i] == null) {
-                response[i] = new Cell();
+                response[i] = new Cell(false, false, -1, " ");
                 response[i].setSet(setCounter++);
             } else {
                 response[i] = line[i].getCopy();
@@ -104,24 +107,67 @@ public class Maze {
     @SuppressWarnings("RegexpSinglelineJava")
     public void prettyPrint2() {
         for (int i = 0; i < width; i++) {
-            System.out.print("_____");
+            System.out.print("____");
         }
         System.out.println();
         for (int i = 0; i < height; i++) {
-            System.out.print("│");
+            printLine(grid[i]);
+        }
+    }
+
+    @SuppressWarnings("RegexpSinglelineJava")
+    public void printLine(Cell[] line) {
+        String stringLine = "│";
+        for (int j = 0; j < width; j++) {
+            Cell temp = line[j];
+            //String color = temp.getColor();
+            if (temp.getWallBottom() && temp.getWallRight()) {
+                stringLine += "_" + "_│";
+            } else if (temp.getWallBottom()) {
+                stringLine += "_"  + "__";
+            } else if (temp.getWallRight()) {
+                stringLine += " "  + " │";
+            } else {
+                stringLine += " "  + "  ";
+            }
+        }
+        System.out.println(stringLine);
+    }
+
+    @SuppressWarnings({"RegexpSinglelineJava", "MagicNumber"})
+    public boolean haveIsolated() {
+        for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                var temp = grid[i][j];
-                if (temp.getWallBottom() && temp.getWallRight()) {
-                    System.out.print(" _" + "_" + "_│");
-                } else if (temp.getWallBottom()) {
-                    System.out.print(" _" + "_" + "_ ");
-                } else if (temp.getWallRight()) {
-                    System.out.print("  " + " " + " │");
-                } else {
-                    System.out.print("  " + " " + "  ");
+                int t = 0;
+                if (i == 0 || j == 0) {
+                    t++;
+                }
+                if (grid[i][j].getWallRight()) {
+                    t++;
+                }
+                if (i > 0 && grid[i - 1][j].getWallBottom()) {
+                    t++;
+                }
+                if (grid[i][j].getWallBottom()) {
+                    t++;
+                }
+                if (j > 0 && grid[i][j - 1].getWallRight()) {
+                    t++;
+                }
+                if (t == 4) {
+                    System.out.println(i + " " + j);
+                    return true;
                 }
             }
-            System.out.println();
         }
+        return false;
+    }
+
+    @SuppressWarnings("RegexpSinglelineJava")
+    public void printSetsOfLine(Cell[] line) {
+        for (int i = 0; i < width; i++) {
+            System.out.print(line[i].getSet() + " ");
+        }
+        System.out.println();
     }
 }

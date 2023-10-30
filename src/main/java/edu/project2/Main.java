@@ -6,7 +6,7 @@ public class Main {
 
     @SuppressWarnings("MagicNumber")
     public static void main(String[] args) {
-        Maze maze = new Maze(10, 10);
+        Maze maze = new Maze(15, 15);
         maze.prettyPrint2();
     }
 }
