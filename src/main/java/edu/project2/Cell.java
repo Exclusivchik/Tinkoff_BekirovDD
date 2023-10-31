@@ -10,6 +10,7 @@ public class Cell {
         this.set = set;
         this.wallBottom = wallBottom;
         this.wallRight = wallRight;
+        this.color = color;
     }
 
     public void setSet(int set) {
