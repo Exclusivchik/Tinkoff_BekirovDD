@@ -82,18 +82,8 @@ public final class TaskN {
     }
 
     public static List<Animal> task16(List<Animal> animals) {
-        return animals.stream().sorted(new Comparator<Animal>() {
-            @Override
-            public int compare(Animal o1, Animal o2) {
-                if (o1.type().compareTo(o2.type()) != 0) {
-                    return o1.type().compareTo(o2.type());
-                }
-                if (o1.sex().compareTo(o2.sex()) != 0) {
-                    o1.sex().compareTo(o2.sex());
-                }
-                return o1.name().compareTo(o2.name());
-            }
-        }).toList();
+        return animals.stream().sorted(Comparator.comparing(Animal::type).thenComparing(Animal::sex)
+            .thenComparing(Animal::name)).toList();
     }
 
     public static Boolean task17(List<Animal> animals) {
