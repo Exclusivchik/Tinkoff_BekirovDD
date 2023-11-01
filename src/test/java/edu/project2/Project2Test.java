@@ -10,7 +10,7 @@ public class Project2Test {
     void haveIsolatedCells() {
         int height = 5;
         int width  = 5;
-        Maze maze = new Maze(height, width);
+        Maze maze = new Maze(new GeneratorEllerMaze(height, width));
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 int t = 0;
