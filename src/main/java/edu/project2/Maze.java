@@ -11,7 +11,6 @@ public class Maze {
         grid = generator.generate();
     }
 
-
     @SuppressWarnings("RegexpSinglelineJava")
     public void prettyPrint2() {
         for (int i = 0; i < width; i++) {
@@ -43,10 +42,6 @@ public class Maze {
         System.out.println(stringLine);
     }
 
-
-    public Cell getCellOfGrid(int row, int col) {
-        return grid[row][col].getCopy();
-    }
 
     public Cell[][] getGrid() {
         return grid;

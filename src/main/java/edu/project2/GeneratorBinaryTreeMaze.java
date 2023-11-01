@@ -6,14 +6,11 @@ public class GeneratorBinaryTreeMaze implements MazeGenerator {
     private final int height;
     private final int width;
     private Cell[][] grid;
-    private int setCounter = 0;
-    private final Cell[] tempLine;
 
     public GeneratorBinaryTreeMaze(int height, int width) {
         this.height = height;
         this.width = width;
         grid = new Cell[height][width];
-        tempLine = new Cell[width];
         init();
     }
 

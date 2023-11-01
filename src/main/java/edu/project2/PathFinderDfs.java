@@ -15,6 +15,10 @@ public class PathFinderDfs implements PathFinder {
     }
 
     public ArrayList<Coordinates> getPath(Coordinates start, Coordinates finish) {
+        int startRow = start.row();
+        int startCol = start.col();
+        int finishRow = finish.row();
+        int finishCol = finish.col();
         Stack<Coordinates> stack = new Stack<>();
         boolean[][] used = new boolean[height][width];
         int[][] dist = new int[height][width];
@@ -25,43 +29,29 @@ public class PathFinderDfs implements PathFinder {
                 dist[i][j] = 0;
             }
         }
-        used[start.row()][start.col()] = true;
-        ancestor[start.row()][start.col()] = null;
+        used[startRow][startCol] = true;
+        ancestor[startRow][startCol] = null;
         stack.push(start);
         while (!stack.isEmpty()) {
             var tempCell = stack.pop();
-            for (var neib : findNeibs(tempCell)) {
+            for (var neib : GetNeighborsForCell.get(grid, tempCell)) {
                 if (!used[neib.row()][neib.col()]) {
-                    used[neib.row()][neib.col()] = true;
-                    stack.push(neib.getCopy());
-                    dist[neib.row()][neib.col()] = dist[start.row()][start.col()] + 1;
-                    ancestor[neib.row()][neib.col()] = tempCell.getCopy();
+                    int neibRow = neib.row();
+                    int neibCol = neib.col();
+                    used[neibRow][neibCol] = true;
+                    stack.push(neib);
+                    dist[neibRow][neibCol] = dist[startRow][startCol] + 1;
+                    ancestor[neibRow][neibCol] = tempCell.getCopy();
                 }
             }
+        }
+        if (ancestor[finishRow][finishCol] == null) {
+            throw new RuntimeException("Мы сюда не попадём");
         }
         ArrayList<Coordinates> path = new ArrayList<>();
         for (var temp = finish; temp != null; temp = ancestor[temp.row()][temp.col()]) {
             path.add(temp);
         }
         return path;
-    }
-
-    private ArrayList<Coordinates> findNeibs(Coordinates cell) {
-        ArrayList<Coordinates> neibs = new ArrayList<>();
-        int row = cell.row();
-        int col = cell.col();
-        if (row > 0 && !grid[row - 1][col].getWallBottom()) {
-            neibs.add(new Coordinates(row - 1, col));
-        }
-        if (col > 0 && !grid[row][col - 1].getWallRight()) {
-            neibs.add(new Coordinates(row, col - 1));
-        }
-        if (row != height - 1 && !grid[row][col].getWallBottom()) {
-            neibs.add(new Coordinates(row + 1, col));
-        }
-        if (col != width - 1 && !grid[row][col].getWallRight()) {
-            neibs.add(new Coordinates(row, col + 1));
-        }
-        return neibs;
     }
 }

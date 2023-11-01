@@ -10,7 +10,7 @@ public final class Main {
         int width = 10;
         MazeGenerator eller = new GeneratorEllerMaze(height, width);
         MazeGenerator binaryTree = new GeneratorBinaryTreeMaze(height, width);
-        Maze maze = new Maze(binaryTree);
+        Maze maze = new Maze(eller);
         PathFinder finder = new PathFinderDfs(maze.getGrid(), height, width);
         maze.prettyPrint2();
         maze.printPath(new Coordinates(0, 0), new Coordinates(9, 9), finder);

@@ -5,7 +5,7 @@ import java.util.Random;
 public class GeneratorEllerMaze implements MazeGenerator {
     private final int height;
     private final int width;
-    private Cell[][] grid;
+    private final Cell[][] grid;
     private int setCounter = 0;
     private final Cell[] tempLine;
 

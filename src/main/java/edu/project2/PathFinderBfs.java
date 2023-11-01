@@ -30,7 +30,7 @@ public class PathFinderBfs implements PathFinder {
         queue.add(start);
         while (!queue.isEmpty()) {
             var tempCell = queue.poll();
-            for (var neib : findNeibs(tempCell)) {
+            for (var neib : GetNeighborsForCell.get(grid, tempCell)) {
                 if (!used[neib.row()][neib.col()]) {
                     used[neib.row()][neib.col()] = true;
                     queue.add(neib.getCopy());
@@ -44,25 +44,5 @@ public class PathFinderBfs implements PathFinder {
             path.add(temp);
         }
         return path;
-    }
-
-
-    private ArrayList<Coordinates> findNeibs(Coordinates cell) {
-        ArrayList<Coordinates> neibs = new ArrayList<>();
-        int row = cell.row();
-        int col = cell.col();
-        if (row > 0 && !grid[row - 1][col].getWallBottom()) {
-            neibs.add(new Coordinates(row - 1, col));
-        }
-        if (col > 0 && !grid[row][col - 1].getWallRight()) {
-            neibs.add(new Coordinates(row, col - 1));
-        }
-        if (row != height - 1 && !grid[row][col].getWallBottom()) {
-            neibs.add(new Coordinates(row + 1, col));
-        }
-        if (col != width - 1 && !grid[row][col].getWallRight()) {
-            neibs.add(new Coordinates(row, col + 1));
-        }
-        return neibs;
     }
 }
