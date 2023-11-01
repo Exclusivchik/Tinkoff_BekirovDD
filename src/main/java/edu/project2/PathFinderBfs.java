@@ -30,7 +30,8 @@ public class PathFinderBfs implements PathFinder {
         queue.add(start);
         while (!queue.isEmpty()) {
             var tempCell = queue.poll();
-            for (var neib : GetNeighborsForCell.get(grid, tempCell)) {
+            var neibs = GetNeighborsForCell.get(grid, tempCell);
+            for (var neib : neibs) {
                 if (!used[neib.row()][neib.col()]) {
                     used[neib.row()][neib.col()] = true;
                     queue.add(neib.getCopy());

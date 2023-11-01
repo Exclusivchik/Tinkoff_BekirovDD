@@ -34,7 +34,8 @@ public class PathFinderDfs implements PathFinder {
         stack.push(start);
         while (!stack.isEmpty()) {
             var tempCell = stack.pop();
-            for (var neib : GetNeighborsForCell.get(grid, tempCell)) {
+            var neibs = GetNeighborsForCell.get(grid, tempCell);
+            for (var neib : neibs) {
                 if (!used[neib.row()][neib.col()]) {
                     int neibRow = neib.row();
                     int neibCol = neib.col();
