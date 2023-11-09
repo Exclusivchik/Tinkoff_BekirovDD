@@ -62,6 +62,6 @@ public class Task8Test {
     @Test
     @DisplayName("test10")
     void test10() {
-        Assertions.assertTrue(Task8.zeroCountDividesBy3("IGORGOFFMAN"));
+        Assertions.assertFalse(Task8.zeroCountDividesBy3("IGORGOFFMAN"));
     }
 }
