@@ -13,7 +13,7 @@ public class FileClonerTest {
     @DisplayName("проверка создания копий")
     void test1() {
         for (int i = 0; i < 3; i++) {
-            Path newFilePath = FileCloner.cloneFile(Path.of("IgorGoffman").toString());
+            Path newFilePath = FileCloner.cloneFile(Path.of("IgorGoffman.txt").toString());
             Assertions.assertTrue(Files.exists(newFilePath));
             try {
                 Files.delete(newFilePath);
