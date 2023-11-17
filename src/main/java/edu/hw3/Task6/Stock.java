@@ -23,6 +23,9 @@ public record Stock(int value) implements Comparable<Stock> {
 
     @Override
     public int compareTo(@NotNull Stock stock) {
+        if (this.value == stock.value) {
+            return 0;
+        }
         return this.value < stock.value() ? 1 : -1;
     }
 }
