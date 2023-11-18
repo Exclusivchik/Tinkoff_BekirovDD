@@ -70,4 +70,58 @@ public class Project2Test {
             }
         }
     }
+
+    @Test
+    @DisplayName("Проверка на адекватность DFS")
+    void testDFS() {
+        var generator = new GeneratorEllerMaze(height, width);
+        Maze maze = new Maze(generator);
+        var grid = maze.getGrid();
+        var solver = new PathFinderDfs(grid, height, width);
+        var path = solver.getPath(new Coordinates(0, 0), new Coordinates(9, 9));
+        for (int i = 0; i < path.size() - 1; i++) {
+            var coord1 = path.get(i);
+            var coord2 = path.get(i + 1);
+            if (coord1.row() == coord2.row()) {
+                if (coord1.col() < coord2.col()) {
+                    assertThat(grid[coord1.row()][coord1.col()].getWallRight()).isFalse();
+                } else {
+                    assertThat(grid[coord2.row()][coord2.col()].getWallRight()).isFalse();
+                }
+            } else {
+                if (coord1.row() < coord2.row()) {
+                    assertThat(grid[coord1.row()][coord1.col()].getWallBottom()).isFalse();
+                } else {
+                    assertThat(grid[coord2.row()][coord2.col()].getWallBottom()).isFalse();
+                }
+            }
+        }
+    }
+
+    @Test
+    @DisplayName("Проверка на адекватность BFS")
+    void testBFS() {
+        var generator = new GeneratorEllerMaze(height, width);
+        Maze maze = new Maze(generator);
+        var grid = maze.getGrid();
+        var solver = new PathFinderBfs(grid, height, width);
+        var path = solver.getPath(new Coordinates(0, 0), new Coordinates(9, 9));
+        for (int i = 0; i < path.size() - 1; i++) {
+            var coord1 = path.get(i);
+            var coord2 = path.get(i + 1);
+            if (coord1.row() == coord2.row()) {
+                if (coord1.col() < coord2.col()) {
+                    assertThat(grid[coord1.row()][coord1.col()].getWallRight()).isFalse();
+                } else {
+                    assertThat(grid[coord2.row()][coord2.col()].getWallRight()).isFalse();
+                }
+            } else {
+                if (coord1.row() < coord2.row()) {
+                    assertThat(grid[coord1.row()][coord1.col()].getWallBottom()).isFalse();
+                } else {
+                    assertThat(grid[coord2.row()][coord2.col()].getWallBottom()).isFalse();
+                }
+            }
+        }
+    }
 }
