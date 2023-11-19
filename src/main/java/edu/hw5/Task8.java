@@ -17,4 +17,8 @@ public final class Task8 {
     public static boolean zeroCountDividesBy3(String string) {
         return Pattern.compile("^(1*01*01*01*)*$").matcher(string).find();
     }
+
+    public static boolean everyOddSymIsOne(String string) {
+        return Pattern.compile("^(1[0|1])*1?$").matcher(string).find();
+    }
 }

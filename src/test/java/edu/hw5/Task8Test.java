@@ -64,4 +64,22 @@ public class Task8Test {
     void test10() {
         Assertions.assertFalse(Task8.zeroCountDividesBy3("IGORGOFFMAN"));
     }
+
+    @Test
+    @DisplayName("test11")
+    void test11() {
+        Assertions.assertTrue(Task8.everyOddSymIsOne("1010101010111111"));
+    }
+
+    @Test
+    @DisplayName("test12")
+    void test12() {
+        Assertions.assertFalse(Task8.everyOddSymIsOne("1001010101010101"));
+    }
+
+    @Test
+    @DisplayName("test13")
+    void test13() {
+        Assertions.assertFalse(Task8.everyOddSymIsOne("Igor Goffman"));
+    }
 }
