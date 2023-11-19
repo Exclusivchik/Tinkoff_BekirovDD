@@ -19,6 +19,6 @@ public final class Task8 {
     }
 
     public static boolean everyOddSymIsOne(String string) {
-        return Pattern.compile("^(1[0|1])*1?$").matcher(string).find();
+        return Pattern.compile("^(1[01])*1?$").matcher(string).find();
     }
 }
