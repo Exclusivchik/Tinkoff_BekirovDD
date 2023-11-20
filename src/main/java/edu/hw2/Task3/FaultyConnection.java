@@ -6,7 +6,7 @@ import org.apache.logging.log4j.Logger;
 
 public class FaultyConnection implements Connection {
     private final static Logger LOGGER = LogManager.getLogger();
-    private static final double FAILURE_PROBABILITY = 0.9;
+    private static final double FAILURE_PROBABILITY = 0.99999;
 
     @Override
     public void execute(String command) throws ConnectionException {
