@@ -11,7 +11,8 @@ import java.util.regex.Pattern;
 @SuppressWarnings({"checkstyle:LineLength", "checkstyle:MagicNumber"})
 public class NginxLog {
     private static final Pattern LOG_PATTERN = Pattern.compile(
-        "^(.*) - (.*) \\[(.*)] \"(.*)\" (\\d+) (\\d+) \"(.*)\" \"(.*)\"$");
+        "^(.*) - (.*) \\[(.*)] \"(.* .* .*)\" (\\d+) (\\d+) \"(.*)\" \"(.*)\"$");
+    private final String origin;
 
     private final String remoteAddr;
     private final String remoteUser;
@@ -33,6 +34,7 @@ public class NginxLog {
 
     public NginxLog(String logLine, String origin) {
         Matcher matcher = LOG_PATTERN.matcher(logLine);
+        this.origin = origin;
         if (matcher.find()) {
             remoteAddr = matcher.group(1);
             remoteUser = matcher.group(2);
@@ -77,5 +79,9 @@ public class NginxLog {
 
     public String getHttpUserAgent() {
         return httpUserAgent;
+    }
+
+    public String getOrigin() {
+        return origin;
     }
 }
