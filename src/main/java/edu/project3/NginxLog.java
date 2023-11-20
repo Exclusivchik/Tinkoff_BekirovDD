@@ -16,7 +16,8 @@ public class NginxLog {
 
     private final String remoteAddr;
     private final String remoteUser;
-    private final OffsetDateTime timeLocal;
+    private final OffsetDateTime dateTimeLocal;
+    private final String stringDate;
     private final String request;
     private final int status;
     private final int bodyBytesSent;
@@ -38,7 +39,9 @@ public class NginxLog {
         if (matcher.find()) {
             remoteAddr = matcher.group(1);
             remoteUser = matcher.group(2);
-            timeLocal = parseDateTimeString(matcher.group(3));
+            dateTimeLocal = parseDateTimeString(matcher.group(3));
+            stringDate = dateTimeLocal.toLocalDate().getDayOfMonth() + "/"
+            + dateTimeLocal.getMonth() + "/" + dateTimeLocal.getYear();
             request = matcher.group(4);
             status = Integer.parseInt(matcher.group(5));
             bodyBytesSent = Integer.parseInt(matcher.group(6));
@@ -57,8 +60,12 @@ public class NginxLog {
         return remoteUser;
     }
 
-    public OffsetDateTime getTimeLocal() {
-        return timeLocal;
+    public OffsetDateTime getDateTimeLocal() {
+        return dateTimeLocal;
+    }
+
+    public String getStringDate() {
+        return stringDate;
     }
 
     public String getRequest() {

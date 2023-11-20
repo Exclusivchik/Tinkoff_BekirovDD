@@ -1,11 +1,14 @@
 package edu.project3;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public final class Main {
     private Main() {
@@ -44,17 +47,16 @@ public final class Main {
                 iter++;
             }
         }
-        //String url = "https://raw.githubusercontent.com/elastic/examples/master/Common%20Data%20Formats/nginx_logs/nginx_logs";
         OffsetDateTime correctFrom = null;
         OffsetDateTime correctTo = null;
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH);
         if (from != null) {
             correctFrom = OffsetDateTime
-                .of(LocalDateTime.parse(from, formatter), ZoneOffset.UTC);
+                .of(LocalDateTime.of(LocalDate.parse(from, formatter), LocalTime.MIN), ZoneOffset.UTC);
         }
         if (to != null) {
             correctTo = OffsetDateTime
-                .of(LocalDateTime.parse(to, formatter), ZoneOffset.UTC);
+                .of(LocalDateTime.of(LocalDate.parse(to, formatter), LocalTime.MIN), ZoneOffset.UTC);
         }
         List<NginxLog> fullLogs = new ArrayList<>();
         for (var path : paths) {

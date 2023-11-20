@@ -24,8 +24,8 @@ public final class LogsParser {
             while ((line = reader.readLine()) != null) {
                 try {
                     NginxLog log = new NginxLog(line, urlPath.substring(urlPath.lastIndexOf("/")));
-                    if ((from  == null || from.isBefore(log.getTimeLocal()))
-                        && (to == null || log.getTimeLocal().isBefore(to))) {
+                    if ((from  == null || from.isBefore(log.getDateTimeLocal()))
+                        && (to == null || log.getDateTimeLocal().isBefore(to))) {
                         logList.add(log);
                     }
                 } catch (IllegalArgumentException e) {
@@ -46,7 +46,8 @@ public final class LogsParser {
             for (String line : lines) {
                 try {
                     NginxLog log = new NginxLog(line, correctPath.getFileName().toString());
-                    if (from.isBefore(log.getTimeLocal()) && log.getTimeLocal().isBefore(to)) {
+                    if ((from  == null || from.isBefore(log.getDateTimeLocal()))
+                        && (to == null || log.getDateTimeLocal().isBefore(to))) {
                         logList.add(log);
                     }
                 } catch (IllegalArgumentException e) {
