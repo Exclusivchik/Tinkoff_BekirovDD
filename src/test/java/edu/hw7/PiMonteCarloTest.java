@@ -10,7 +10,7 @@ public class PiMonteCarloTest {
 
     @Test
     void boost() {
-        int simulations = 100000000;
+        int simulations = 1000000000;
         var start1 = LocalDateTime.now();
         PiMonteCarlo.linearPi(simulations);
         var end1 = LocalDateTime.now();
