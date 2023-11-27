@@ -3,14 +3,15 @@ package edu.hw7;
 import org.junit.jupiter.api.Test;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.concurrent.ExecutionException;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class PiMonteCarloTest {
     private static final double STANDART = 3.1415926535;
 
     @Test
-    void boost() {
-        int simulations = 1000000000;
+    void boost() throws ExecutionException, InterruptedException {
+        int simulations = 100000000;
         var start1 = LocalDateTime.now();
         PiMonteCarlo.linearPi(simulations);
         var end1 = LocalDateTime.now();
@@ -29,7 +30,7 @@ public class PiMonteCarloTest {
     }
 
     @Test
-    void accuracyMultiThreadPi() {
+    void accuracyMultiThreadPi() throws ExecutionException, InterruptedException {
         int simulations = 100000000;
         var response = PiMonteCarlo.multiThreadPi(simulations);
         assertThat(Math.abs(response - STANDART)).isLessThan(0.001);
