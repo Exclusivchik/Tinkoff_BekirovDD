@@ -4,10 +4,10 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class SynchronizedPersonDatabaseTest {
+public class SynchronizedReadWriteLockDatabaseTest {
     @Test
     public void testConcurrentAddAndFind() throws InterruptedException {
-        SynchronizedPersonDatabase database = new SynchronizedPersonDatabase();
+        SynchronizedReadWriteLockDatabase database = new SynchronizedReadWriteLockDatabase();
         Person igorGoffman = new Person(78, "Igor", "78street", "+787878");
         Thread thread1 = new Thread(() -> {
             database.add(igorGoffman);
