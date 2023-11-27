@@ -1,9 +1,9 @@
 package edu.hw7;
 
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
 
 public final class PiMonteCarlo {
     private static final double CONST_FOR_FORMULA = 4.0;
@@ -23,32 +23,32 @@ public final class PiMonteCarlo {
         return CONST_FOR_FORMULA * circleCount / simulations;
     }
 
-    public static double multiThreadPi(long simulations) throws ExecutionException, InterruptedException {
+    public static double multiThreadPi(long simulations) {
         int threads = Runtime.getRuntime().availableProcessors();
         long perThread = simulations / threads;
-        int circleCount = 0;
+        final int[] circleCount = {0};
+
+        ExecutorService executor = Executors.newFixedThreadPool(threads);
 
         for (int i = 0; i < threads; i++) {
-            FutureTask<Integer> futureTask = getIntegerFutureTask(perThread);
-            new Thread(futureTask).start();
-            circleCount += futureTask.get();
+            executor.submit(() -> {
+                int localCircleCount = 0;
+                for (int j = 0; j < perThread; j++) {
+                    double x = ThreadLocalRandom.current().nextDouble();
+                    double y = ThreadLocalRandom.current().nextDouble();
+                    if (x * x + y * y <= 1) {
+                        localCircleCount++;
+                    }
+                }
+                circleCount[0] += localCircleCount;
+            });
+        }
+        executor.shutdown();
+        try {
+            executor.awaitTermination(1, TimeUnit.MINUTES);
+        } catch (InterruptedException e) {
         }
 
-        return CONST_FOR_FORMULA * circleCount / simulations;
-    }
-
-    private static FutureTask<Integer> getIntegerFutureTask(long perThread) {
-        Callable task = () -> {
-            int localCircleCount = 0;
-            for (int j = 0; j < perThread; j++) {
-                double x = ThreadLocalRandom.current().nextDouble();
-                double y = ThreadLocalRandom.current().nextDouble();
-                if (x * x + y * y <= 1) {
-                    localCircleCount++;
-                }
-            }
-            return localCircleCount;
-        };
-        return new FutureTask<Integer>(task);
+        return CONST_FOR_FORMULA * circleCount[0] / simulations;
     }
 }
