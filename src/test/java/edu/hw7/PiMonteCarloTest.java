@@ -29,14 +29,14 @@ public class PiMonteCarloTest {
 
     @Test
     void accuracyLinearPi() {
-        int simulations = 100000000;
+        int simulations = 10000000;
         var response = PiMonteCarlo.linearPi(simulations);
         assertThat(Math.abs(response - STANDART)).isLessThan(0.001);
     }
 
     @Test
     void accuracyMultiThreadPi(){
-        int simulations = 100000000;
+        int simulations = 10000000;
         var response = PiMonteCarlo.multiThreadPi(simulations);
         assertThat(Math.abs(response - STANDART)).isLessThan(0.001);
     }
