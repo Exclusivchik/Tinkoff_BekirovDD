@@ -7,7 +7,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadLocalRandom;
 import javax.imageio.ImageIO;
-import org.jetbrains.annotations.NotNull;
 
 public class FractalFlame {
     //Для изображения размером 1920х1080 можно
@@ -35,7 +34,10 @@ public class FractalFlame {
         }
     }
 
-    public void createFile(String fileName, @NotNull ImageType imageType) {
+    public void createFile(String fileName, ImageType imageType) {
+        if (imageType == null) {
+            throw new IllegalArgumentException();
+        }
         try {
             BufferedImage image = new BufferedImage(width, height, 1);
             for (int i = 0; i < height; i++) {
@@ -58,7 +60,10 @@ public class FractalFlame {
         }
     }
 
-    public void render(int n, int eqCount, int it, @NotNull NonLinearTransforms transform, int threads) {
+    public void render(int n, int eqCount, int it, NonLinearTransforms transform, int threads) {
+        if (transform == null) {
+            throw new IllegalArgumentException();
+        }
         //Генерируем eqCount аффинных преобразований со стартовыми цветами;
         Transformation[] transformations = createTransformations(eqCount);
         try (ExecutorService executorService = Executors.newFixedThreadPool(threads)) {
@@ -69,10 +74,7 @@ public class FractalFlame {
                     iterate(it, newX, newY, transformations, transform);
                 });
             }
-            //Thread.sleep(5000);
-        } //catch (InterruptedException e) {
-//            throw new RuntimeException(e);
-//        }
+        }
     }
 
     private void iterate(
