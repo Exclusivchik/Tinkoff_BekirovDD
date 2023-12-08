@@ -15,7 +15,7 @@ public class FractalFlameTest {
         int height = 1080;
         int width = 1920;
         FractalFlame fractalFlame = new FractalFlame(height, width);
-        fractalFlame.render(1000, 1000, 1000, NonLinearTransforms.DISK, 5);
+        fractalFlame.render(1000, 1000, 1000, 0, NonLinearTransforms.DISK, 5);
         fractalFlame.correction(0.2);
         fractalFlame.createFile("testFractal", ImageType.JPG);
         File file = new File("testFractal.jpg");
@@ -33,7 +33,7 @@ public class FractalFlameTest {
         int height = 1080;
         int width = 1920;
         FractalFlame fractalFlame = new FractalFlame(height, width);
-        Assertions.assertThrows(IllegalArgumentException.class, () -> fractalFlame.render(1000, 1000, 1000, null, 5));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> fractalFlame.render(1000, 1000, 1000, 0, null, 5));
         Assertions.assertThrows(IllegalArgumentException.class, () -> fractalFlame.createFile("testFractal", null));
     }
 }

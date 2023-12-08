@@ -5,7 +5,6 @@ public class Pixel {
     private int green = 0;
     private int blue = 0;
     private int counter = 0;
-    private double normal = 0;
 
     public int getRed() {
         return red;
@@ -37,13 +36,5 @@ public class Pixel {
 
     public int getCounter() {
         return counter;
-    }
-
-    public double getNormal() {
-        return normal;
-    }
-
-    public void setNormal(double normal) {
-        this.normal = normal;
     }
 }

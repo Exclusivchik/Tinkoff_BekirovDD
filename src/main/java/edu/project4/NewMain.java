@@ -6,7 +6,7 @@ public class NewMain {
         int height = 2000;
         int width = 2000;
         FractalFlame fractalFlame = new FractalFlame(height, width);
-        fractalFlame.render(10000, 20, 10000, NonLinearTransforms.DISK, 5);
+        fractalFlame.render(1000, 10, 10000, 20, NonLinearTransforms.SPHERIC, 5);
         fractalFlame.correction(0);
         fractalFlame.createFile("newFractal", ImageType.JPG);
     }

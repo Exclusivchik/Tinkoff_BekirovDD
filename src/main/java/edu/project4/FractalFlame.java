@@ -60,7 +60,7 @@ public class FractalFlame {
         }
     }
 
-    public void render(int n, int eqCount, int it, NonLinearTransforms transform, int threads) {
+    public void render(int n, int eqCount, int it, int symmetry, NonLinearTransforms transform, int threads) {
         if (transform == null) {
             throw new IllegalArgumentException();
         }
@@ -71,14 +71,15 @@ public class FractalFlame {
                 executorService.submit(() -> {
                     double newX = ThreadLocalRandom.current().nextDouble(X_MIN, X_MAX);
                     double newY = ThreadLocalRandom.current().nextDouble(Y_MIN, Y_MAX);
-                    iterate(it, newX, newY, transformations, transform);
+                    iterate(it, newX, newY, symmetry, transformations, transform);
                 });
             }
         }
     }
 
     private void iterate(
-        int iterations, double x, double y, Transformation[] transformations, NonLinearTransforms transform
+        int iterations, double x, double y,
+        int symmetry, Transformation[] transformations, NonLinearTransforms transform
     ) {
         double newX = x;
         double newY = y;
@@ -93,27 +94,34 @@ public class FractalFlame {
             Point nonLinear = getTransform(newX, newY, transform);
             newX = nonLinear.x();
             newY = nonLinear.y();
-            if (step >= 0 && X_MIN <= newX && newX <= X_MAX && Y_MIN <= newY && newY <= Y_MAX) {
-                //Вычисляем координаты точки, а затем задаем цвет
-                int x1 = (int) (height - Math.floor(((X_MAX - newX) / (X_MAX - X_MIN)) * height));
-                int y1 = (int) (width - Math.floor(((Y_MAX - newY) / (Y_MAX - Y_MIN)) * width));
-                //Если точка попала в область изображения
-                if (x1 < height && y1 < width) {
-                    synchronized (pixels[x1][y1]) {
-                        //то проверяем, первый ли раз попали в нее
-                        if (pixels[x1][y1].getCounter() == 0) {
-                            //Попали в первый раз, берем стартовый цвет у соответствующего аффинного преобразования
-                            pixels[x1][y1].setRed(afine.red());
-                            pixels[x1][y1].setGreen(afine.green());
-                            pixels[x1][y1].setBlue(afine.blue());
-                        } else {
-                            //Попали не в первый раз, считаем так:
-                            pixels[x1][y1].setRed((pixels[x1][y1].getRed() + afine.red()) / 2);
-                            pixels[x1][y1].setGreen((pixels[x1][y1].getGreen() + afine.green()) / 2);
-                            pixels[x1][y1].setBlue((pixels[x1][y1].getBlue() + afine.blue()) / 2);
+            var theta2 = 0.0;
+            for (int s = 0; s < symmetry; s++) {
+                theta2 += (Math.PI * 2) / symmetry;
+                var rotated = rotate(new Point(newX, newY), theta2);
+                newX = rotated.x();
+                newY = rotated.y();
+                if (step >= 0 && X_MIN <= newX && newX <= X_MAX && Y_MIN <= newY && newY <= Y_MAX) {
+                    //Вычисляем координаты точки, а затем задаем цвет
+                    int x1 = (int) (height - Math.floor(((X_MAX - newX) / (X_MAX - X_MIN)) * height));
+                    int y1 = (int) (width - Math.floor(((Y_MAX - newY) / (Y_MAX - Y_MIN)) * width));
+                    //Если точка попала в область изображения
+                    if (x1 < height && y1 < width) {
+                        synchronized (pixels[x1][y1]) {
+                            //то проверяем, первый ли раз попали в нее
+                            if (pixels[x1][y1].getCounter() == 0) {
+                                //Попали в первый раз, берем стартовый цвет у соответствующего аффинного преобразования
+                                pixels[x1][y1].setRed(afine.red());
+                                pixels[x1][y1].setGreen(afine.green());
+                                pixels[x1][y1].setBlue(afine.blue());
+                            } else {
+                                //Попали не в первый раз, считаем так:
+                                pixels[x1][y1].setRed((pixels[x1][y1].getRed() + afine.red()) / 2);
+                                pixels[x1][y1].setGreen((pixels[x1][y1].getGreen() + afine.green()) / 2);
+                                pixels[x1][y1].setBlue((pixels[x1][y1].getBlue() + afine.blue()) / 2);
+                            }
+                            //Увеличиваем счетчик точки на единицу
+                            pixels[x1][y1].incrementCounter();
                         }
-                        //Увеличиваем счетчик точки на единицу
-                        pixels[x1][y1].incrementCounter();
                     }
                 }
             }
@@ -185,5 +193,11 @@ public class FractalFlame {
                     .setBlue(Math.min((int) (pixels[row][col].getBlue() * gammaFactor), MAX_COLOR_VALUE));
             }
         }
+    }
+
+    private Point rotate(Point point, double theta) {
+        double xRotated = point.x() * Math.cos(theta) - point.y() * Math.sin(theta);
+        double yRotated = point.x() * Math.sin(theta) + point.y() * Math.cos(theta);
+        return new Point(xRotated, yRotated);
     }
 }
