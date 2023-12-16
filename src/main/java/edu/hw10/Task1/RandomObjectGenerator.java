@@ -4,6 +4,7 @@ import edu.hw10.Task1.Annots.Max;
 import edu.hw10.Task1.Annots.Min;
 import edu.hw10.Task1.Annots.NotNull;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -28,10 +29,29 @@ public final class RandomObjectGenerator {
         }
     }
 
+    public static Object nextObject(Class<?> requiredClass) {
+        Constructor<?> constructor = requiredClass.getConstructors()[0];
+        Parameter[] params = constructor.getParameters();
+        try {
+            if (params.length == 0) {
+                return constructor.newInstance();
+            }
+            return createByConstructor(constructor, params);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private static Object createByFabricMethod(Method fabricMethod, Parameter[] params)
         throws InvocationTargetException, IllegalAccessException {
         Object[] createdParams = createParams(params);
         return fabricMethod.invoke(null, createdParams);
+    }
+
+    private static Object createByConstructor(Constructor<?> constructor, Parameter[] params)
+        throws InvocationTargetException, InstantiationException, IllegalAccessException {
+        Object[] createdParams = createParams(params);
+        return constructor.newInstance(createdParams);
     }
 
     private static Object[] createParams(Parameter[] params) {
@@ -63,7 +83,7 @@ public final class RandomObjectGenerator {
                             max = ((Max) annotation).value();
                         }
                     }
-                    createdParams[i] = ThreadLocalRandom.current().nextInt(min, max);
+                    createdParams[i] = ThreadLocalRandom.current().nextInt(min, max + 1);
                 }
             }
         }
