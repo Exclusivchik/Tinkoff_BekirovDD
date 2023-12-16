@@ -37,19 +37,19 @@ public final class CacheProxy implements InvocationHandler {
             Object result;
             String key = method.getName() + " " + Arrays.toString(args);
             if (cache.persist()) {
-                File fileToSave = new File("src/main/java/edu/hw10/task2/cache/" + key + ".txt");
+                File fileToSave = new File("src/main/java/edu/hw10/Task2/cache/" + key + ".txt");
                 if (fileToSave.exists()) {
                     try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileToSave))) {
                         result = in.readObject();
                     } catch (IOException e) {
-                        throw new RuntimeException();
+                        throw new RuntimeException(e);
                     }
                 } else {
                     result = method.invoke(target, args);
                     try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(fileToSave))) {
                         out.writeObject(result);
                     } catch (IOException e) {
-                        throw new RuntimeException();
+                        throw new RuntimeException(e);
                     }
                 }
             } else if (CACHE_MAP.containsKey(key)) {
