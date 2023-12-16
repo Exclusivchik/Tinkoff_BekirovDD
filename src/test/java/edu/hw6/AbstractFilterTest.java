@@ -11,6 +11,7 @@ import java.util.List;
 import static edu.hw6.AbstractFilter.globMatches;
 import static edu.hw6.AbstractFilter.magicNumber;
 import static edu.hw6.AbstractFilter.regexContains;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class AbstractFilterTest {
     @Test
@@ -27,8 +28,7 @@ public class AbstractFilterTest {
             for (Path path : entries) {
                 response.add(path.getFileName());
             }
-            var required = List.of(Path.of("goffman.png"), Path.of("spartak.png"));
-            Assertions.assertEquals(required, response);
+            assertThat(response).containsExactlyInAnyOrder(Path.of("goffman.png"), Path.of("spartak.png"));
         } catch (IOException e) {
         }
     }
