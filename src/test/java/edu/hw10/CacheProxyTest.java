@@ -15,7 +15,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 public class CacheProxyTest {
-    private static final Path DIRECTORY = Path.of("src/main/java/edu/hw10/task2/cache");
+    private static final Path DIRECTORY = Path.of("src/main/java/edu/hw10/Task2/cache");
 
     @BeforeAll
     static void before() throws IOException {

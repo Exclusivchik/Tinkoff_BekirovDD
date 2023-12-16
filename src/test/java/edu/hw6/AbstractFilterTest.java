@@ -1,20 +1,19 @@
 package edu.hw6;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.List;
+import org.junit.jupiter.api.Test;
 import static edu.hw6.AbstractFilter.globMatches;
 import static edu.hw6.AbstractFilter.magicNumber;
 import static edu.hw6.AbstractFilter.regexContains;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class AbstractFilterTest {
     @Test
-    void test1() {
+    void test1() throws IOException {
 
         DirectoryStream.Filter<Path> filter = AbstractFilter
             .regularFile()
@@ -27,9 +26,7 @@ public class AbstractFilterTest {
             for (Path path : entries) {
                 response.add(path.getFileName());
             }
-            var required = List.of(Path.of("goffman.png"), Path.of("spartak.png"));
-            Assertions.assertEquals(required, response);
-        } catch (IOException e) {
+            assertThat(response).containsExactlyInAnyOrder(Path.of("goffman.png"), Path.of("spartak.png"));
         }
     }
 }
